@@ -57,6 +57,7 @@ export default function SignIn() {
                         value={password}
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry={true}
+
                     />
                 </AreaInput>
 
