@@ -87,7 +87,7 @@ export default function New() {
 
                     <Input
                         placeholder="Valor desejado"
-                        keyboardType="numeric"
+                        keyboardType='numbers-and-punctuation'
                         value={valueInput}
                         onChangeText={(text) => setValueInput(text)}
                     />

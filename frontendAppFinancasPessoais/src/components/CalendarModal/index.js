@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
 
 import {
@@ -8,7 +8,36 @@ import {
     ModalContent
 } from "./styles";
 
-export default function CalendarModal({ setVisible }) {
+import { Calendar, LocaleConfig } from "react-native-calendars";
+
+import { ptBR } from "./localeCalendar";
+
+LocaleConfig.locales['pt-br'] = ptBR
+LocaleConfig.defaultLocale = 'pt-br'
+
+export default function CalendarModal({ setVisible, handleFilter }) {
+    const [dateNow, setDateNow] = useState(new Date())
+    const [markedDates, setMarkedDates] = useState({})
+
+    function handleOnDayPress(date) {
+        setDateNow(new Date(date.dateString))
+
+        let markedDay = {}
+
+        markedDay[date.dateString] = {
+            selected: true,
+            selectedColor: '#3b3dbf',
+            textColor: '#fff'
+        }
+
+        setMarkedDates(markedDay)
+    }
+
+    function handleFilterDate() {
+        handleFilter(dateNow)
+        setVisible()
+    }
+
     return (
         <Container>
             <TouchableWithoutFeedback onPress={setVisible}>
@@ -16,7 +45,16 @@ export default function CalendarModal({ setVisible }) {
             </TouchableWithoutFeedback>
 
             <ModalContent>
-                <ButtonFilter>
+                <Calendar
+                    onDayPress={handleOnDayPress}
+                    markedDates={markedDates}
+                    enableSwipeMonths={true}
+                    theme={{
+                        todayTextColor: '#ff0000'
+                    }}
+                />
+
+                <ButtonFilter onPress={handleFilterDate}>
                     <ButtonFilterText>Filtrar</ButtonFilterText>
                 </ButtonFilter>
             </ModalContent>
